@@ -1,6 +1,6 @@
 #include "Wire.h"
 #include "XRRemoteReceiver.h"
-#include "XRImu.h"
+//#include "XRImu.h"
 #include "XRRobotDog.h"
 #include "XRRobotLeg.h"
 #include "XRServoActuator.h"
@@ -9,7 +9,7 @@
 XRRemoteReceiver receiver(27,10);
 
 // imu
-XRImu imu();
+//XRImu imu();
 
 // define parameters for robot---------------
 #define hipOffset 76.5
@@ -47,7 +47,7 @@ XRServoActuator rearRightHip(5,1500,A7,0,180,90);
 XRServoActuator rearRightThigh(5,1500,A7,0,180,90);
 XRServoActuator rearRightKnee(5,1500,A7,0,180,90);
 
-XRRobotLeg rearRight(&rearRightHip, hipOffset, &rearRightThigh, thighLength, &rearRightKnee, shinLength);
+XRRobotLeg rearRightLeg(&rearRightHip, hipOffset, &rearRightThigh, thighLength, &rearRightKnee, shinLength);
 
 // Robot
 XRRobotDog miniDogv2(&frontLeftLeg, &frontRightLeg, &rearLeftLeg, &rearRightLeg, bodyWidth, bodyLength);
@@ -66,8 +66,8 @@ void setup() {
   Serial.begin(115200);
 
   receiver.setup();
-  imu.setup();
-  minidogv2.setup();
+//  imu.setup();
+  miniDogv2.setup();
   
 }
 
@@ -80,7 +80,6 @@ void loop() {
 
 
         // modes - use serial 
-        
         if (Serial.available()) {       // check for serial data
             char c = Serial.read();
   
@@ -96,15 +95,18 @@ void loop() {
         }
 
         // mode - use remote
-        if (receiver.toggleTop == 0) {           // no compliance
-          mode = 0;
-        }
-        else if (receiver.toggleTop == 1) {      // compliance on
-          mode = 1;
-        }
-
-        if (receiver.Select == 1) {              // calibrate hall sensors
-          mode = 99;
+        if (receiver.isConnected)
+        {
+            if (receiver.toggleTop == 0) {           // no compliance
+              mode = 0;
+            }
+            else if (receiver.toggleTop == 1) {      // compliance on
+              mode = 1;
+            }
+    
+            if (receiver.Select == 1) {              // calibrate hall sensors
+              mode = 99;
+            }
         }        
 
    
