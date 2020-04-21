@@ -1,69 +1,76 @@
-#include <SPI.h>
+#include "Wire.h"
 #include "XRRemoteReceiver.h"
 #include "XRImu.h"
 #include "XRRobotDog.h"
 #include "XRRobotLeg.h"
 #include "XRServoActuator.h"
 
-int x;
-int y;
-int z;
-
-int yaw;
-int r;
-int p;
-
+// robot receiver
 XRRemoteReceiver receiver(27,10);
 
+// imu
+XRImu imu();
+
+// define parameters for robot---------------
+#define hipOffset 76.5
+#define thighLength 125
+#define shinLength 125     
+
+#define bodyWidth 126      // half the distance from the middle of the body to the hip pivot  
+#define bodyLength 147.5      // distance from centre of body to shoulder pivot
+
+// construct robot
+
+// Front left leg
+XRServoActuator frontLeftHip(5,1500,A7,0,180,90);
+XRServoActuator frontLeftThigh(5,1500,A7,0,180,90);
+XRServoActuator frontLeftKnee(5,1500,A7,0,180,90);
+
+XRRobotLeg frontLeftLeg(&frontLeftHip, hipOffset, &frontLeftThigh, thighLength, &frontLeftKnee, shinLength);
+
+// Front right leg
+XRServoActuator frontRightHip(5,1500,A7,0,180,90);
+XRServoActuator frontRightThigh(5,1500,A7,0,180,90);
+XRServoActuator frontRightKnee(5,1500,A7,0,180,90);
+
+XRRobotLeg frontRightLeg(&frontRightHip, hipOffset, &frontRightThigh, thighLength, &frontRightKnee, shinLength);
+
+// Rear left leg
+XRServoActuator rearLeftHip(5,1500,A7,0,180,90);
+XRServoActuator rearLeftThigh(5,1500,A7,0,180,90);
+XRServoActuator rearLeftKnee(5,1500,A7,0,180,90);
+
+XRRobotLeg rearLeftLeg(&rearLeftHip, hipOffset, &rearLeftThigh, thighLength, &rearLeftKnee, shinLength);
+
+// Front left leg
+XRServoActuator rearRightHip(5,1500,A7,0,180,90);
+XRServoActuator rearRightThigh(5,1500,A7,0,180,90);
+XRServoActuator rearRightKnee(5,1500,A7,0,180,90);
+
+XRRobotLeg rearRight(&rearRightHip, hipOffset, &rearRightThigh, thighLength, &rearRightKnee, shinLength);
+
+// Robot
+XRRobotDog miniDogv2(&frontLeftLeg, &frontRightLeg, &rearLeftLeg, &rearRightLeg, bodyWidth, bodyLength);
 
 // timers
 
 unsigned long currentMillis;
 unsigned long previousMillis;
-unsigned long previousWalkMillis;
-unsigned long previousSafetyMillis;
-
-// There is a first order filter running on all motions, allbeit turned down a lot. It's also used for the reactivity of the compliance
-
-float multiplierKneesRight = 2;
-float multiplierShouldersRight = 2;
-float multiplierHipsRight = 0;
-
-float multiplierKneesLeft = 2;
-float multiplierShouldersLeft = 2;
-float multiplierHipsLeft = 0;
-
-// filters values
-
-int filterKneesRight = 15;
-int filterShouldersRight = 15;
-int filterHipsRight = 25;
-
-int filterKneesLeft = 15;
-int filterShouldersLeft = 15;
-int filterHipsLeft = 25;
-
-// global joint threshold value for hall effects
-int threshholdGlobal =  5;
-
-
 
 // modes
 
 int mode = 0;
 
 
-
 void setup() {
-
 
   receiver.setup();
 
- 
+  imu.setup();
 
   Serial.begin(115200);
 
- 
+  minidogv2.setup();
 }
 
 void loop() {

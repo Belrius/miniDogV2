@@ -1,5 +1,5 @@
-#ifndef XRREMOTERECEIVER_H
-#define XRREMOTERECEIVER_H
+#ifndef XR_IMU_H
+#define XR_IMU_H
 
 //IMU stuff
 #include "I2Cdev.h"
@@ -19,6 +19,20 @@ volatile bool mpuInterrupt = false;     // indicates whether MPU interrupt pin h
   uint16_t fifoCount;     // count of all bytes currently in FIFO
   uint8_t fifoBuffer[64]; // FIFO storage buffer
   int IMUdataReady = 0;
+
+  // orientation/motion vars
+  Quaternion q;           // [w, x, y, z]         quaternion container
+  VectorInt16 aa;         // [x, y, z]            accel sensor measurements
+  VectorInt16 aaReal;     // [x, y, z]            gravity-free accel sensor measurements
+  VectorInt16 aaWorld;    // [x, y, z]            world-frame accel sensor measurements
+  VectorFloat gravity;    // [x, y, z]            gravity vector
+  float euler[3];         // [psi, theta, phi]    Euler angle container
+  float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
+  
+  float pitch;
+  float roll;
+  float rollFiltered;
+  
 
 // IMU interrupt service routine
 void dmpDataReady() {
@@ -71,23 +85,13 @@ class XRImu : public XRComponent
   // AD0 high = 0x69
   MPU6050 mpu;
   //MPU6050 mpu(0x69); // <-- use for AD0 high
-  
-
-  
-  // orientation/motion vars
-  Quaternion q;           // [w, x, y, z]         quaternion container
-  VectorInt16 aa;         // [x, y, z]            accel sensor measurements
-  VectorInt16 aaReal;     // [x, y, z]            gravity-free accel sensor measurements
-  VectorInt16 aaWorld;    // [x, y, z]            world-frame accel sensor measurements
-  VectorFloat gravity;    // [x, y, z]            gravity vector
-  float euler[3];         // [psi, theta, phi]    Euler angle container
-  float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
-  
-  float pitch;
-  float roll;
-  float rollFiltered;
-  
+ 
    public:
+
+   // constructor
+   XRImu() : XRComomponent()
+   {    
+   }
    
    void setup()
    {
@@ -148,7 +152,7 @@ class XRImu : public XRComponent
 
 
   
-}
+};
 
 
 

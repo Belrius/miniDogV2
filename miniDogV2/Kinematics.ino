@@ -3,7 +3,6 @@ void kinematics (int leg, int mode, float x, float y, float z, float roll, float
       // *** TRANSLATION AXIS ***
 
     // moving the foot sideways on the end plane
-    #define hipOffset 76.5
     float lengthY;
     float hipAngle1a;
     float hipAngle1b;
@@ -17,8 +16,6 @@ void kinematics (int leg, int mode, float x, float y, float z, float roll, float
     float z2;    
 
     // side plane of individual leg only
-    #define shinLength 125     
-    #define thighLength 125
     float z3;
     float shoulderAngle1;
     float shoulderAngle1Degrees;
@@ -32,7 +29,6 @@ void kinematics (int leg, int mode, float x, float y, float z, float roll, float
     // *** ROTATION AXIS
 
     // roll axis
-    #define bodyWidth 126      // half the distance from the middle of the body to the hip pivot  
     float legDiffRoll;            // differnece in height for each leg
     float bodyDiffRoll;           // how much shorter the 'virtual body' gets
     float footDisplacementRoll;   // where the foot actually is
@@ -46,7 +42,7 @@ void kinematics (int leg, int mode, float x, float y, float z, float roll, float
 
     // pitch axis
 
-    #define bodyLength 147.5      // distance from centre of body to shoulder pivot
+
     float legDiffPitch;            // differnece in height for each leg
     float bodyDiffPitch;           // how much shorter the 'virtual body' gets
     float footDisplacementPitch;   // where the foot actually is

@@ -14,17 +14,27 @@ class XRRobotDog : public XRComponent
     
    }
 
-   XRRobotDog(XRRobotLeg& frontLeft, XRRobotLeg& frontRight, XRRobotLeg& rearLeft, XRRobotLeg& rearRight) 
-             : XRComponent(), leg_fl(frontLeft), leg_fr(frontRight), leg_rl(rearLeft), leg_rr(rearRight)
+   XRRobotDog(XRRobotLeg* frontLeft, 
+              XRRobotLeg* frontRight, 
+              XRRobotLeg* rearLeft, 
+              XRRobotLeg* rearRight,
+              float bodyWidth,   // half the distance from the middle of the body to the hip pivot  
+              float bodyLength  // distance from centre of body to shoulder pivot
+   ) 
+             : XRComponent(), leg_fl(*frontLeft), leg_fr(*frontRight), leg_rl(*rearLeft), leg_rr(*rearRight), bodyWidth(bodyWidth), bodyLength(bodyLength)
    {
     
    }
    
 
-   XRRobotLeg& leg_fl;
-   XRRobotLeg& leg_fr;
-   XRRobotLeg& leg_rl;
-   XRRobotLeg& leg_rr;
+      XRRobotLeg& leg_fl;
+      XRRobotLeg& leg_fr;
+      XRRobotLeg& leg_rl;
+      XRRobotLeg& leg_rr;
+      float bodyWidth;   // half the distance from the middle of the body to the hip pivot  
+      float bodyLength;  // distance from centre of body to shoulder pivot
+
+
    
    void setup()
    {

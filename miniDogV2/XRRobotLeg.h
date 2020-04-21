@@ -14,16 +14,20 @@ class XRRobotLeg : public XRComponent
     
    }
 
-   XRRobotLeg(XRCompliantActuator* hipAct, XRCompliantActuator* legAct, XRCompliantActuator* kneeAct)
+   XRRobotLeg(XRCompliantActuator* hipAct, float hipOffset,
+              XRCompliantActuator* legAct, float thighLength,
+              XRCompliantActuator* kneeAct, float shinLength):XRComponent(), hip(*hipAct), hipOffset(hipOffset), leg(*legAct),thighLength(thighLength), knee(*kneeAct), shinLength(shinLength)
    {
-    hip = *hipAct;
-    leg = *legAct;
-    knee = *kneeAct;
    }
 
    XRCompliantActuator& hip;
+   float hipOffset;
+   
    XRCompliantActuator& leg;
+   float thighLength;
+   
    XRCompliantActuator& knee;
+   float shinLength;
    
    void setup()
    {
