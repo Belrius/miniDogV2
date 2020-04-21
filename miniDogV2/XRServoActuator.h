@@ -32,7 +32,8 @@ class XRServoActuator : public XRCompliantActuator
   
    public:
 
-   ServoActuator(int servoOutPin, int servoOffset, int hallEffectInPin)
+   XRServoActuator(int servoOutPin, int servoOffset, int hallEffectInPin, float minPosition, float maxPosition, float maxSpeedPerSecond) 
+                  : XRCompliantActuator(minPosition, maxPosition, maxSpeedPerSecond)
    {
       _servo.attach(servoOutPin);
       _servoOffset = servoOffset;
