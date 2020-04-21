@@ -21,7 +21,7 @@ XRImu imu();
 
 // construct robot
 
-// Front left leg
+// Front left leg - servo pin, servo offset, hall effect pint, min angle, max angle, speed degrees per second
 XRServoActuator frontLeftHip(5,1500,A7,0,180,90);
 XRServoActuator frontLeftThigh(5,1500,A7,0,180,90);
 XRServoActuator frontLeftKnee(5,1500,A7,0,180,90);
@@ -58,19 +58,17 @@ unsigned long currentMillis;
 unsigned long previousMillis;
 
 // modes
-
 int mode = 0;
 
 
 void setup() {
 
-  receiver.setup();
-
-  imu.setup();
-
   Serial.begin(115200);
 
+  receiver.setup();
+  imu.setup();
   minidogv2.setup();
+  
 }
 
 void loop() {
