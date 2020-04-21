@@ -26,6 +26,26 @@ class XRCompliantActuator : public XRActuator
     
    }
 
+   virtual void SetCompliance(float compliance)
+   {
+      if (compliance < 0)
+      {
+        compliance = 0;
+      }
+
+      if (compliance > 1)
+      {
+        compliance = 1;
+      }
+
+      _compliance = compliance;
+   }
+
+   float GetCompliance()
+   {
+      return _compliance;
+   }
+
    void Calibrate()
    {
       // override with calibration routine
