@@ -9,11 +9,6 @@ class XRRobotDog : public XRComponent
 
    public:
 
-   XRRobotDog() : XRComponent()
-   {
-    
-   }
-
    XRRobotDog(XRRobotLeg* frontLeft, 
               XRRobotLeg* frontRight, 
               XRRobotLeg* rearLeft, 
@@ -50,6 +45,23 @@ class XRRobotDog : public XRComponent
       leg_fr.loop();
       leg_rl.loop();
       leg_rr.loop();
+   }
+
+
+   void SetMode(XRActuator::ActuatorMode mode)
+   {
+      leg_fl.SetMode(mode);
+      leg_fr.SetMode(mode);
+      leg_rl.SetMode(mode);
+      leg_rr.SetMode(mode);
+   }
+
+   void SetCompliance(float compliance)
+   {
+      leg_fl.SetCompliance(compliance);
+      leg_fr.SetCompliance(compliance);
+      leg_rl.SetCompliance(compliance);
+      leg_rr.SetCompliance(compliance);
    }
 
 

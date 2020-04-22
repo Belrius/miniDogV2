@@ -58,8 +58,7 @@ unsigned long currentMillis;
 unsigned long previousMillis;
 
 // modes
-int mode = 0;
-
+XRActuator::ActuatorMode mode = XRActuator::ActuatorMode::normal;
 
 void setup() {
 
@@ -75,22 +74,22 @@ void loop() {
 
   currentMillis = millis();
   if (currentMillis - previousMillis >= 10) {  // start timed event
-          
         previousMillis = currentMillis;
 
-
+        XRActuator::ActuatorMode newMode = mode;
+        
         // modes - use serial 
         if (Serial.available()) {       // check for serial data
             char c = Serial.read();
   
             if (c == 'a') {             // no compliance
-              mode = 0;
+              newMode = XRActuator::ActuatorMode::normal;
             }
             else if (c == 'b') {        // compliance on
-              mode = 1;
+              newMode = XRActuator::ActuatorMode::compliant;
             }
             else if (c == 'z') {        // calibrate hall sensors
-              mode = 99;
+              newMode = XRActuator::ActuatorMode::calibration;
             }
         }
 
@@ -98,18 +97,25 @@ void loop() {
         if (receiver.isConnected)
         {
             if (receiver.toggleTop == 0) {           // no compliance
-              mode = 0;
+              newMode = XRActuator::ActuatorMode::normal;
             }
             else if (receiver.toggleTop == 1) {      // compliance on
-              mode = 1;
+              newMode = XRActuator::ActuatorMode::compliant;
             }
     
             if (receiver.Select == 1) {              // calibrate hall sensors
-              mode = 99;
+              newMode = XRActuator::ActuatorMode::calibration;
             }
         }        
 
+        if (newMode != mode)
+        {
+            miniDogv2.SetMode(newMode);
+            mode = newMode;
+        }
    
   }   // end of timed loop
+
+  miniDogv2.loop();
 
 } //  end of main loop

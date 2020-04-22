@@ -9,11 +9,6 @@ class XRRobotLeg : public XRComponent
 
    public:
 
-   XRRobotLeg()
-   {
-    
-   }
-
    XRRobotLeg(XRCompliantActuator* hipAct, float hipOffset,
               XRCompliantActuator* legAct, float thighLength,
               XRCompliantActuator* kneeAct, float shinLength):XRComponent(), hip(*hipAct), hipOffset(hipOffset), leg(*legAct),thighLength(thighLength), knee(*kneeAct), shinLength(shinLength)
@@ -43,7 +38,19 @@ class XRRobotLeg : public XRComponent
       knee.loop();
    }
 
+   void SetMode(XRActuator::ActuatorMode mode)
+   {
+      hip.SetMode(mode);
+      leg.SetMode(mode);
+      knee.SetMode(mode);
+   }
 
+   void SetCompliance(float compliance)
+   {
+      hip.SetCompliance(compliance);
+      leg.SetCompliance(compliance);
+      knee.SetCompliance(compliance);
+   }
   
 };
 
