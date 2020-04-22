@@ -50,6 +50,13 @@ class XRServoActuator : public XRCompliantActuator
    void loop()
    {
        _hall = analogRead(_hallEffectInPin) - _hallOffset;
+
+       // TODO - use the loop to attempt to move the servo to the target position 
+       // in small increments rather than just set the servo directly to the target
+
+       // this allows us to also use the speed and compliance settings correctly
+
+       // requires consultation with James as to how this would work best.
    }
 
    void Calibrate()
@@ -57,6 +64,12 @@ class XRServoActuator : public XRCompliantActuator
       _hallOffset = analogRead(_hallEffectInPin);
    }
 
+   // Set Target positon
+   // Ideally this shouldn't change from the base class implementation
+   //
+   // We should use the loop to manage the update of the actuator's position
+   // to allow us to take account of compliance and desired speed. See notes in the loop function
+   //
    void SetTargetPosition(float position)
    {
       // call the base class to set the target position

@@ -64,8 +64,7 @@ class XRRobotDog : public XRComponent
       leg_rr.SetCompliance(compliance);
    }
 
-
-  
+ 
 };
 
 

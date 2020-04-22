@@ -72,7 +72,10 @@ void setup() {
 
 void loop() {
 
+  // update the IMU. values are available through Imu.pitch and Imu.Roll
   imu.loop();
+
+  // update the receiver. this can be interogated for whether it's connected and for its values
   receiver.loop();
 
   currentMillis = millis();
@@ -120,5 +123,13 @@ void loop() {
   }   // end of timed loop
 
   miniDogv2.loop();
+
+  //
+  // Motion for the dog will be handled with reusable objects I'm calling Actions, Poses and Gaits
+  //
+  // it will be possible to simply apply an action, pose or a gait to the dog, and in fact smoothly blend between them
+  //
+  // this uses technicques similar to those used for animation in the games industry
+  //
 
 } //  end of main loop

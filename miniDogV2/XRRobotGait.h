@@ -3,6 +3,8 @@
 
 #include "XRComponent.h"
 
+// Not yet implemented
+
 class XRRobotGait : public XRComponent
 {
     // walk test positions

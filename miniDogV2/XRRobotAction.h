@@ -3,7 +3,9 @@
 
 #include "XRComponent.h"
 
-class XRRobotLimbAction : public XRComponent
+// not yet implemented
+
+class XRRobotAction : public XRComponent
 {
 
 
