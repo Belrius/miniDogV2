@@ -56,6 +56,27 @@ class XRServoActuator : public XRCompliantActuator
    {
       _hallOffset = analogRead(_hallEffectInPin);
    }
+
+   void SetTargetPosition(float position)
+   {
+      // call the base class to set the target position
+      XRCompliantActuator::SetTargetPosition(position);
+
+      // the requested position may have been out of range
+      // and may have been adjusted
+      
+      // get the actual position that's been set
+      float targetPos = GetTargetPosition();
+      float minPos = GetMinPosition();
+      float maxPos = GetMaxPosition();
+
+      // map the target position to a number of microseconds from 1000-2000 on the servo
+      // normally done with a map function but the positions are floats
+      int microsecs = (int)  ( (targetPos - minPos) / ( maxPos - minPos) * 1000 ) + 1000;
+
+      _servo.writeMicroseconds(microsecs);
+      
+   }
   
 };
 

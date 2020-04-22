@@ -96,7 +96,21 @@ class XRActuator : public XRComponent
    {
       return _mode;
    }
-   
+
+   float GetTargetPosition()
+   {
+       return _targetPosition;
+   }
+
+   float GetMinPosition()
+   {
+       return _minPosition;
+   }
+
+   float GetMaxPosition()
+   {
+       return _maxPosition;
+   }
  
 };
 
