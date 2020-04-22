@@ -10,6 +10,14 @@
 
 volatile bool mpuInterrupt = false;     // indicates whether MPU interrupt pin has gone high
 
+  int requested_state;   
+  
+  // class default I2C address is 0x68
+  // specific I2C addresses may be passed as a parameter here
+  // AD0 low = 0x68 (default for SparkFun breakout and InvenSense evaluation board)
+  // AD0 high = 0x69
+  MPU6050 mpu;
+  //MPU6050 mpu(0x69); // <-- use for AD0 high
 
   // MPU control/status vars
   bool dmpReady = false;  // set true if DMP init was successful
@@ -69,27 +77,19 @@ void readAngles()  {
 
         IMUdataReady = 0;
     }
-}
+};
      
 
 
 
 class XRImu : public XRComponent
 {
-
-  int requested_state;   
-  
-  // class default I2C address is 0x68
-  // specific I2C addresses may be passed as a parameter here
-  // AD0 low = 0x68 (default for SparkFun breakout and InvenSense evaluation board)
-  // AD0 high = 0x69
-  MPU6050 mpu;
-  //MPU6050 mpu(0x69); // <-- use for AD0 high
- 
+   int _arduinoInteruptPin;
+   
    public:
 
    // constructor
-   XRImu() : XRComomponent()
+   XRImu(int arduinoInteruptPin):XRComponent(), _arduinoInteruptPin(arduinoInteruptPin)
    {    
    }
    
@@ -121,7 +121,7 @@ class XRImu : public XRComponent
           mpu.setDMPEnabled(true);
     
           // enable Arduino interrupt detection
-          attachInterrupt(26, dmpDataReady, RISING);
+          attachInterrupt(_arduinoInteruptPin, dmpDataReady, RISING);
           mpuIntStatus = mpu.getIntStatus();
     
           // get expected DMP packet size for later comparison

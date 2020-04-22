@@ -1,15 +1,15 @@
 #include "Wire.h"
 #include "XRRemoteReceiver.h"
-//#include "XRImu.h"
+#include "XRImu.h"
 #include "XRRobotDog.h"
 #include "XRRobotLeg.h"
 #include "XRServoActuator.h"
 
-// robot receiver
+// robot receiver - CE, CSN
 XRRemoteReceiver receiver(27,10);
 
-// imu
-//XRImu imu();
+// imu - arduino interupt pin
+XRImu imu(26);
 
 // define parameters for robot---------------
 #define hipOffset 76.5
@@ -65,12 +65,15 @@ void setup() {
   Serial.begin(115200);
 
   receiver.setup();
-//  imu.setup();
+  imu.setup();
   miniDogv2.setup();
   
 }
 
 void loop() {
+
+  imu.loop();
+  receiver.loop();
 
   currentMillis = millis();
   if (currentMillis - previousMillis >= 10) {  // start timed event
