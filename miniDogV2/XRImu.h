@@ -37,8 +37,6 @@ volatile bool mpuInterrupt = false;     // indicates whether MPU interrupt pin h
   float euler[3];         // [psi, theta, phi]    Euler angle container
   float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
   
-  float pitch;
-  float roll;
   float rollFiltered;
   
 
@@ -84,9 +82,12 @@ void readAngles()  {
 
 class XRImu : public XRComponent
 {
-   int _arduinoInteruptPin;
+    int _arduinoInteruptPin;
    
    public:
+
+    float pitch;
+    float roll;
 
    // constructor
    XRImu(int arduinoInteruptPin):XRComponent(), _arduinoInteruptPin(arduinoInteruptPin)
