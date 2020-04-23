@@ -19,13 +19,25 @@ XRImu imu(26);
 #define bodyWidth 126      // half the distance from the middle of the body to the hip pivot  
 #define bodyLength 147.5      // distance from centre of body to shoulder pivot
 
-// construct robot
+// construct robot ---------------------------------------------------------
 
-// Front left leg - servo pin, servo offset, hall effect pint, min angle, max angle, speed degrees per second
+
+// define actuators for front left leg - servo pin, servo offset, hall effect pint, min angle, max angle, speed degrees per second
+//
+// min angle and max angle are mapped to 1000-2000 microseconds
+// these could be -90 and 90 or -135 and 45. They can also be reversed - ie 90 down to -90. They should be set to represent a meaningful value in your 
+//
+// When dealing with an XRActuator one should only care about the desired "position" selected from between a minimum and maximum position
+// The details of how that position are interpretted are left up to the implementation
+//
+// eg for a servo the position may be a target angle, for a linear actuator it may be a target length
+//
 XRServoActuator frontLeftHip(5,1500,A7,0,180,90);
 XRServoActuator frontLeftThigh(5,1500,A7,0,180,90);
 XRServoActuator frontLeftKnee(5,1500,A7,0,180,90);
 
+// define front left leg - pass in actuators
+// Kinematics is (will be) built into each leg
 XRRobotLeg frontLeftLeg(&frontLeftHip, hipOffset, &frontLeftThigh, thighLength, &frontLeftKnee, shinLength);
 
 // Front right leg
@@ -49,7 +61,10 @@ XRServoActuator rearRightKnee(5,1500,A7,0,180,90);
 
 XRRobotLeg rearRightLeg(&rearRightHip, hipOffset, &rearRightThigh, thighLength, &rearRightKnee, shinLength);
 
-// Robot
+// Robot ------------------------------
+
+// whole robot kinematics for actions, gaits and poses are managed in the Robot object
+// however the robot sets targets for the legs which the legs are responsible for calculating
 XRRobotDog miniDogv2(&frontLeftLeg, &frontRightLeg, &rearLeftLeg, &rearRightLeg, bodyWidth, bodyLength);
 
 // timers
@@ -124,12 +139,13 @@ void loop() {
 
   miniDogv2.loop();
 
+
   //
   // Motion for the dog will be handled with reusable objects I'm calling Actions, Poses and Gaits
   //
   // it will be possible to simply apply an action, pose or a gait to the dog, and in fact smoothly blend between them
   //
-  // this uses technicques similar to those used for animation in the games industry
+  // this uses techniques similar to those used for animation in the games industry
   //
 
 } //  end of main loop
